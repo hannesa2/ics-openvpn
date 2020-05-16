@@ -14,6 +14,9 @@ plugins {
 
 android {
     compileSdkVersion(30)
+    val ndkSelectedVersion = extra.get("ndkSelectedVersion") as String
+    println("NDK=$ndkSelectedVersion")
+    ndkVersion = ndkSelectedVersion
 
     defaultConfig {
         minSdkVersion(14)

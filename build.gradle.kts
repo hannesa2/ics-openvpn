@@ -16,6 +16,25 @@ buildscript {
 }
 
 allprojects {
+    extra.apply{
+        set("minSdkVersion", 26)
+        set("targetSdkVersion", 27)
+
+        when {
+            System.getenv("CI") == "true" -> {
+                println("I run on Github CI")
+                set("ndkSelectedVersion", "21.3.6528147")
+            }
+            System.getenv("JITPACK") == "true" -> {
+                println("I run on JITPACK CI")
+                set("ndkSelectedVersion", "21.1.6352462")
+            }
+            else -> {
+                println("I run somewhere")
+                set("ndkSelectedVersion", "21.3.6528147")
+            }
+        }
+    }
     repositories {
         google()
         jcenter()
