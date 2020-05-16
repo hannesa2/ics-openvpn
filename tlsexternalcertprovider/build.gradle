@@ -11,7 +11,7 @@ ext {
 
 android {
     compileSdkVersion 27
-
+    ndkVersion "21.1.6352462"
 
     defaultConfig {
         applicationId "de.blinkt.externalcertprovider"
