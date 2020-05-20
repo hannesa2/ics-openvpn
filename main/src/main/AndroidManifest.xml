@@ -4,7 +4,7 @@
     package="de.blinkt.openvpn">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -35,6 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/blinkt"
         tools:ignore="UnusedAttribute">
+        <activity
+                android:name=".activities.CredentialsPopup"
+                android:theme="@style/blinkt.dialog" />
+
         <meta-data
             android:name="android.content.APP_RESTRICTIONS"
             android:resource="@xml/app_restrictions" />
@@ -102,6 +106,25 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.CreateShortcuts"
+            android:excludeFromRecents="true"
+            android:label="@string/vpn_shortcut"
+            android:taskAffinity=".CreateShortcuts"
+            android:theme="@android:style/Theme.DeviceDefault.Light.DialogWhenLarge">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".FileProvider"
+            android:authorities="de.blinkt.openvpn.FileProvider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            tools:ignore="ExportedContentProvider" />
         <!--
         <receiver android:name="core.GetRestrictionReceiver">
             <intent-filter>
