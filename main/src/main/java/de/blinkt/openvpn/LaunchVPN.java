@@ -42,6 +42,7 @@ import de.blinkt.openvpn.core.Preferences;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import de.blinkt.openvpn.core.VpnStatus;
+import de.blinkt.openvpn.fragments.VPNProfileList;
 
 /**
  * This Activity actually handles two stages of a launcher shortcut's life cycle.
@@ -90,7 +91,7 @@ public class LaunchVPN extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.launchvpn);
-        startVpnFromIntent();
+        startVpnFromIntent(getIntent().getBooleanExtra(VPNProfileList.AUTOMATIC, false));
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -119,7 +120,7 @@ public class LaunchVPN extends Activity {
         }
     };
 
-    protected void startVpnFromIntent() {
+    protected void startVpnFromIntent(boolean automatic) {
         // Resolve the intent
 
         final Intent intent = getIntent();
@@ -155,7 +156,7 @@ public class LaunchVPN extends Activity {
                 finish();
             } else {
                 mSelectedProfile = profileToConnect;
-                launchVPN();
+                launchVPN(automatic);
             }
         }
     }
@@ -307,7 +308,7 @@ public class LaunchVPN extends Activity {
         });
     }
 
-    void launchVPN() {
+    void launchVPN(boolean automatic) {
         int vpnok = mSelectedProfile.checkProfile(this);
         if (vpnok != R.string.no_error_found) {
             showConfigErrorDialog(vpnok);
@@ -327,7 +328,7 @@ public class LaunchVPN extends Activity {
             execeuteSUcmd("chown system /dev/tun");
         }
 
-        if (intent != null) {
+        if (!automatic && intent != null) {
             VpnStatus.updateStateString("USER_VPN_PERMISSION", "", R.string.state_user_vpn_permission,
                     ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);
             // Start the query
