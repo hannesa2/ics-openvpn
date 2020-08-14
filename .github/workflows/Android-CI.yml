@@ -10,7 +10,7 @@ on:
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 1.8
@@ -18,7 +18,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Install swig
-        run: sudo apt-get update -q && sudo apt-get install -q unzip swig cmake
+        run: brew install swig
       - name: Sign prepare for github
         run: mkdir -p ~/.gradle && echo icsopenvpnDebugSign=true > ~/.gradle/gradle.properties
       - name: Build project
