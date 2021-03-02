@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Install swig
+        run: brew install swig
+      - name: Sign prepare for github
+        run: mkdir -p ~/.gradle && echo icsopenvpnDebugSign=true > ~/.gradle/gradle.properties
+      - name: Build project
+        run: ./gradlew assembleUiRelease
+      - name: Run tests
+        run: ./gradlew test --stacktrace
+
